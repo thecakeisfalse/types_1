@@ -1,0 +1,34 @@
+name: "Основы Nim: Знакомство с языком"
+
+on:
+  push
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    steps:
+    - name: "Установка зависимостей"
+      uses: jiro4989/setup-nim-action@v2
+      with:
+        nim-version: 2.0.8
+    - uses: actions/checkout@v4
+    - name: "Сборка тестов"
+      run: nim c test
+    - name: "Запуск тестов"
+      run: ./test
+  
+  build:
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: tests
+    steps:
+    - name: "Установка зависимостей"
+      uses: jiro4989/setup-nim-action@v2
+      with:
+        nim-version: 2.0.8
+    - uses: actions/checkout@v4
+    - name: "Сборка main"
+      run: nim c main
+    - name: "Запуск main"
+      run: ./main
